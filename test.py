@@ -40,6 +40,10 @@ srcfile = str()
 
 print "Running ./setup_assist.sh script: ",
 
+complete = 0
+step1 = 0
+step2 = 0
+step3 = 0
 while True:
     if channel.recv_ready():
         channel_data += channel.recv(100)
@@ -50,19 +54,16 @@ while True:
     ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
     channel_data = ansi_escape.sub('', channel_data)
 
-    step1 = 0
     if channel_data.endswith('installervm:~# '):
         if step1 == 0:
             channel.send('cd /root/Contrail_Service_Orchestration_3.3.1/\n')
             step1 += 1
 
-    step2 = 0
     if channel_data.endswith('installervm:~/Contrail_Service_Orchestration_3.3.1# '):
         if step2 == 0:
             channel.send('./setup_assist.sh\n')
             step2 += 1
 
-    step3 = 0
     if re.search('Press any key to continue:$',channel_data):
         if step3 < 2:
             channel.send('\n')
@@ -111,9 +112,11 @@ while True:
         channel.send('1\n')
     if re.search('Do you have VRR behind NAT \(y/n\) \[\w*.*?\]:$',channel_data):
         channel.send('n\n')
-    if re.search('Do all your VRR instances use the same username and password \[\w*.*?\]:$',channel_data):
+    if re.search('Do all your VRR instances use the same username and password \[.*?\]:$',channel_data):
         channel.send('y\n')
-    if re.search('Enter the username for VRR \[\w*.*?\]:$',channel_data):
+    if re.search('Enter the username for VRR \[.*?\]:$',channel_data):
+        channel.send('root\n')
+    if re.search('Enter the username for VRR of instance 1 \[.*?\]:$',channel_data):
         channel.send('root\n')
     if re.search('Enter the password for VRR:$',channel_data):
         channel.send('passw0rd\n')
@@ -141,10 +144,28 @@ while True:
         channel.send('\n')
 
 
-    if re.search('central:Number of replicas of each microservice \[\w*.*?\]:$',channel_data):
+    if re.search('central:Number of replicas of each microservice \[.*?\]:$',channel_data):
         channel.send('1\n')
-    if re.search('regional:Number of replicas of each microservice \[\w*.*?\]:$',channel_data):
+    if re.search('regional:Number of replicas of each microservice \[.*?\]:$',channel_data):
         channel.send('1\n')
     time.sleep(1)
 
+    if re.search('DEPLOYMENT_ENV\w*.*',channel_data):
+        print "########## yes completed #################################"
+        complete = 1
 
+    if re.search('Done!',channel_data):
+        print "######################### done ##########################"
+        if complete == 1:
+            print "######################### done 111111 ##########################"
+            content = re.findall('DEPLOYMENT_ENV=\w*.*?Done!',channel_data,re.DOTALL)[0]
+
+            print "###########################"
+            print content
+            with open('/root/passwords.txt','w') as f:
+                f.write(content)
+            print "###########################"
+            break
+
+
+ 
