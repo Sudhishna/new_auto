@@ -12,15 +12,15 @@ print "Copying CSO tar file to installervm: "
 source= '/root/Contrail_Service_Orchestration_3.3.1.tar.gz' 
 destination ='/root/Contrail_Service_Orchestration_3.3.1.tar.gz'
 sftp = client.open_sftp()
-#sftp.put(source,destination)
+sftp.put(source,destination)
 sftp.close()
 print "Success"
 time.sleep(10)
 
 print "Extracting files from the tar file: "
 cmd = "tar xvzf /root/Contrail_Service_Orchestration_3.3.1.tar.gz"
-#stdin, stdout, stderr = client.exec_command(cmd)
-#print (stdout.read())
+stdin, stdout, stderr = client.exec_command(cmd)
+print (stdout.read())
 print "Success"
 time.sleep(5)
 
@@ -28,7 +28,7 @@ print "Copying provision_vm.conf file to installervm: ",
 source= '/root/Contrail_Service_Orchestration_3.3.1/confs/installervm.conf'
 destination ='/root/Contrail_Service_Orchestration_3.3.1/confs/provision_vm.conf'
 sftp = client.open_sftp()
-#sftp.put(source,destination)
+sftp.put(source,destination)
 sftp.close()
 print "Success"
 time.sleep(5)
@@ -112,11 +112,11 @@ while True:
         channel.send('1\n')
     if re.search('Do you have VRR behind NAT \(y/n\) \[\w*.*?\]:$',channel_data):
         channel.send('n\n')
-    if re.search('Do all your VRR instances use the same username and password \[.*?\]:$',channel_data):
+    if re.search('Do all your VRR instances use the same username and password \[\w*.*?\]:$',channel_data):
         channel.send('y\n')
-    if re.search('Enter the username for VRR \[.*?\]:$',channel_data):
+    if re.search('Enter the username for VRR \[\w*.*?\]:$',channel_data):
         channel.send('root\n')
-    if re.search('Enter the username for VRR of instance 1 \[.*?\]:$',channel_data):
+    if re.search('Enter the username for VRR of instance 1 \[\w*.*?\]:$',channel_data):
         channel.send('root\n')
     if re.search('Enter the password for VRR:$',channel_data):
         channel.send('passw0rd\n')
@@ -144,28 +144,27 @@ while True:
         channel.send('\n')
 
 
-    if re.search('central:Number of replicas of each microservice \[.*?\]:$',channel_data):
+    if re.search('central:Number of replicas of each microservice \[\w*.*?\]:$',channel_data):
         channel.send('1\n')
-    if re.search('regional:Number of replicas of each microservice \[.*?\]:$',channel_data):
+    if re.search('regional:Number of replicas of each microservice \[\w*.*?\]:$',channel_data):
         channel.send('1\n')
     time.sleep(1)
 
-    if re.search('DEPLOYMENT_ENV\w*.*',channel_data):
-        print "########## yes completed #################################"
-        complete = 1
+    #if re.search('\w*.*',channel_data):
+    #    print "########## yes completed #################################"
+    #    complete = 1
 
     if re.search('Done!',channel_data):
-        print "######################### done ##########################"
-        if complete == 1:
-            print "######################### done 111111 ##########################"
-            content = re.findall('DEPLOYMENT_ENV=\w*.*?Done!',channel_data,re.DOTALL)[0]
+        #if complete == 1:
+        print "######################### done 111111 ##########################"
+        content = re.findall('PLEASE STORE ALL INFRA PASSWORDS GENERATED BELOW\w*.*?Done!',channel_data,re.DOTALL)[0]
 
-            print "###########################"
-            print content
-            with open('/root/passwords.txt','w') as f:
-                f.write(content)
-            print "###########################"
-            break
+        print "###########################"
+        print content
+        with open('/root/passwords.txt','w') as f:
+            f.write(content)
+        print "###########################"
+        break
 
 
  

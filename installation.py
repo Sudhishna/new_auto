@@ -24,7 +24,7 @@ def untar(fname):
     else:
         print "Not a tar.gz file: '%s '" % sys.argv[0]
  
-#untar("/root/Contrail_Service_Orchestration_3.3.1.tar.gz")
+untar("/root/Contrail_Service_Orchestration_3.3.1.tar.gz")
 
 data_file = "/root/data/cso-data.txt"
 with open(data_file) as f:
@@ -80,4 +80,4 @@ def show3():
     sys.stdout = save
     os.chdir('/root/')
 
-#show3()
+show3()
