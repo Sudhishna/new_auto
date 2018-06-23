@@ -29,7 +29,7 @@ def untar(fname):
     else:
         print "Not a tar.gz file: '%s '" % sys.argv[0]
  
-#untar("/root/Contrail_Service_Orchestration_3.3.1.tar.gz")
+untar("/root/Contrail_Service_Orchestration_3.3.1.tar.gz")
 
 data_file = "/root/data/cso-data.txt"
 with open(data_file) as f:
@@ -39,7 +39,6 @@ dict = {}
 for line in lines:
     if line.strip() != "":
         key,val = line.strip().split(":")
-        #print key,val
         dict.update({key:val})
 
 def load_template_config(dict,template_file):
@@ -60,20 +59,20 @@ dict.update({'installerip':installerip})
 print dict
 
 template_file = "/root/template/provision-vm.j2"
-#provision_config = load_template_config(dict,template_file)
+provision_config = load_template_config(dict,template_file)
 
-#with open('/root/Contrail_Service_Orchestration_3.3.1/confs/provision_vm.conf','w') as f:
-#    f.write(provision_config)
+with open('/root/Contrail_Service_Orchestration_3.3.1/confs/provision_vm.conf','w') as f:
+    f.write(provision_config)
 
 installervmip = dict['installervmip'].split("/")[0]
 dict.update({'installerip':installervmip})
 print dict
 
 template_file = "/root/template/provision-vm.j2"
-#provision_config = load_template_config(dict,template_file)
+provision_config = load_template_config(dict,template_file)
 
-#with open('/root/Contrail_Service_Orchestration_3.3.1/confs/installervm.conf','w') as f:
-#    f.write(provision_config)
+with open('/root/Contrail_Service_Orchestration_3.3.1/confs/installervm.conf','w') as f:
+    f.write(provision_config)
 
 def show3():
     print 'start show3'
@@ -85,7 +84,7 @@ def show3():
     sys.stdout = save
     os.chdir('/root/')
 
-#show3()
+show3()
 time.sleep(10)
 
 call(["python", "test.py"])
@@ -99,15 +98,15 @@ print "Copying CSO tar file to installervm: "
 source= '/root/Contrail_Service_Orchestration_3.3.1.tar.gz'
 destination ='/root/Contrail_Service_Orchestration_3.3.1.tar.gz'
 sftp = client.open_sftp()
-#sftp.put(source,destination)
+sftp.put(source,destination)
 sftp.close()
 print "Success"
 time.sleep(10)
 
 print "Extracting files from the tar file: "
 cmd = "tar xvzf /root/Contrail_Service_Orchestration_3.3.1.tar.gz"
-#stdin, stdout, stderr = client.exec_command(cmd)
-#print (stdout.read())
+stdin, stdout, stderr = client.exec_command(cmd)
+print (stdout.read())
 print "Success"
 time.sleep(5)
 
@@ -115,7 +114,7 @@ print "Copying provision_vm.conf file to installervm: ",
 source= '/root/Contrail_Service_Orchestration_3.3.1/confs/installervm.conf'
 destination ='/root/Contrail_Service_Orchestration_3.3.1/confs/provision_vm.conf'
 sftp = client.open_sftp()
-#sftp.put(source,destination)
+sftp.put(source,destination)
 sftp.close()
 print "Success"
 time.sleep(5)
