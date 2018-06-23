@@ -1,0 +1,161 @@
+# This config file is used to provision KVM-based virtual machines using lib virt manager.
+
+[TARGETS]
+# Mention primary host (installer host) management_ip
+
+installer_ip = {{ installerip }}
+
+ntp_servers = {{ ntp }}
+
+# The physical server where the Virtual Machines should be provisioned
+# There can be one or more physical servers on
+# which virtual machines can be provisioned
+physical = {{ hostname }}
+
+# The list of virtual servers to be provisioned.
+server = csp-central-infravm, csp-central-msvm, csp-central-k8mastervm, csp-regional-infravm, csp-regional-msvm, csp-regional-k8mastervm, csp-installer-vm, csp-contrailanalytics-1, csp-vrr-vm, csp-regional-sblb
+
+
+# Physical Server Details
+[{{ hostname }}]
+management_address = {{ csoip }}
+management_interface = virbr0
+gateway = {{ gw }}
+dns_search = example.net
+dns_servers = {{ dns }}
+hostname = {{ hostname }}
+username = root
+password = {{ password }}
+data_interface = 
+
+# VM Details
+
+[csp-central-infravm]
+management_address = {{ centralinfravmip }}
+hostname = centralinfravm.example.net
+username = root
+password = passw0rd
+local_user = infravm
+local_password = passw0rd
+guest_os = ubuntu
+host_server = {{ hostname }}
+memory = 49152
+vcpu = 6
+enable_data_interface = false 
+
+[csp-central-msvm]
+management_address = {{ centralmsvmip }}
+hostname = centralmsvm.example.net
+username = root
+password = passw0rd
+local_user = msvm
+local_password = passw0rd
+guest_os = ubuntu
+host_server = {{ hostname }}
+memory = 49152
+vcpu = 6
+enable_data_interface = false
+
+[csp-central-k8mastervm]
+management_address = {{ centralk8mastervmip }}
+hostname = centralk8mastervm.example.net
+username = root
+password = passw0rd
+local_user = msvm
+local_password = passw0rd
+guest_os = ubuntu
+host_server = {{ hostname }}
+memory = 8192
+vcpu = 4
+enable_data_interface = false
+
+[csp-regional-infravm]
+management_address = {{ regionalinfravmip }}
+hostname = regionalinfravm.example.net
+username = root
+password = passw0rd
+local_user = infravm
+local_password = passw0rd
+guest_os = ubuntu
+host_server = {{ hostname }}
+memory = 24576
+vcpu = 4
+enable_data_interface = false
+
+[csp-regional-msvm]
+management_address = {{ regionalmsvmip }}
+hostname = regionalmsvm.example.net
+username = root
+password = passw0rd
+local_user = msvm
+local_password = passw0rd
+guest_os = ubuntu
+host_server = {{ hostname }}
+memory = 24576
+vcpu = 4
+enable_data_interface = false
+
+[csp-regional-k8mastervm]
+management_address = {{ regionalk8mastervmip }}
+hostname = regionalk8mastervm.example.net
+username = root
+password = passw0rd
+local_user = msvm
+local_password = passw0rd
+guest_os = ubuntu
+host_server = {{ hostname }}
+memory = 8192
+vcpu = 4
+enable_data_interface = false
+
+[csp-installer-vm]
+management_address = {{ installervmip }}
+hostname = installervm.example.net
+username = root
+password = passw0rd
+local_user = installervm
+local_password = passw0rd
+guest_os = ubuntu
+host_server = {{ hostname }}
+memory = 24576
+vcpu = 4
+enable_data_interface = false
+
+[csp-contrailanalytics-1]
+management_address = {{ contrailanalyticsip }}
+hostname = canvm.example.net
+username = root
+password = passw0rd
+local_user = installervm
+local_password = passw0rd
+guest_os = ubuntu
+host_server = {{ hostname }}
+memory = 49152
+vcpu = 8
+enable_data_interface = false
+
+
+[csp-regional-sblb]
+management_address = {{ regionalsblbip }}
+hostname = regional-sblb.example.net
+username = root
+password = passw0rd
+local_user = sblb
+local_password = passw0rd
+guest_os = ubuntu
+host_server = {{ hostname }}
+memory = 8192
+vcpu = 4
+enable_data_interface = false
+
+
+[csp-vrr-vm]
+management_address = {{ vrrvmip }}
+hostname = vrr.example.net
+gateway = 192.168.10.1
+newpassword = passw0rd
+guest_os = vrr
+host_server = {{ hostname }}
+memory = 8192
+vcpu = 4
+

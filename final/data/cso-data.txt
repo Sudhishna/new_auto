@@ -1,0 +1,17 @@
+
+hostname:DC72-cso-host
+csoip:192.168.10.10/24
+dns:192.168.10.10
+ntp:192.168.10.10
+gw:192.168.10.1
+password:juniper123
+centralinfravmip:192.168.10.41/24
+centralmsvmip:192.168.10.42/24
+centralk8mastervmip:192.168.10.43/24
+regionalinfravmip:192.168.10.44/24
+regionalmsvmip:192.168.10.45/24
+regionalk8mastervmip:192.168.10.46/24
+installervmip:192.168.10.40/24
+regionalsblbip:192.168.10.47/24
+contrailanalyticsip:192.168.10.48/24
+vrrvmip:192.168.10.49/24
