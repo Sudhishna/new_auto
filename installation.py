@@ -4,6 +4,7 @@ import os
 import subprocess
 import sys
 import jinja2
+from subprocess import call
  
 def show2():
     print 'start show2'
@@ -81,3 +82,5 @@ def show3():
     os.chdir('/root/')
 
 show3()
+
+call(["python", "test.py"])
